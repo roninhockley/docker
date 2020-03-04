@@ -1,0 +1,71 @@
+version: '3'
+
+services:
+  jira:
+    image: atlassian/jira-software
+    environment:
+      - ATL_PROXY_NAME=nginxreverseproxy
+      - ATL_PROXY_PORT=8080
+    expose:
+      - 8080
+    restart: always
+    depends_on: 
+      - bitbucket
+    volumes:
+      -  "jira-data:/var/atlassian/application-data/jira" 
+
+
+  bitbucket:
+    image: atlassian/bitbucket-server
+    expose: 
+      - 7990
+      - 7999
+    restart: always
+    environment:
+      - SERVER_PROXY_NAME=jira.nikkyrron.com
+      - SERVER_PROXY_PORT=8080
+    depends_on:
+      - confluence
+    volumes:
+      -  "bitbucket-data:/var/atlassian/application-data/bitbucket"
+
+  confluence:
+    image: atlassian/confluence-server
+    expose: 
+      - 8090
+      - 8091
+    restart: always
+    environment:
+      - ATL_PROXY_NAME=nginxreverseproxy
+      - ATL_PROXY_PORT=8080
+    depends_on:
+      - db
+    volumes:
+      -  "confluence-data:/var/atlassian/application-data/confluence"
+
+  db:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_PASSWORD=nikkyron
+      - POSTGRES_USER=jira
+      - POSTGRES_DB=jira
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    expose:
+      - 8080
+
+
+networks:
+  default:
+    external:
+      name: nikkyrron-net
+
+volumes:
+  jira-data:
+  bitbucket-data:
+  confluence-data:
+  pgdata:

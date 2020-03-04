@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  nginxreverseproxy:
+    image: nginxinc/nginx-unprivileged
+    container_name: reverse-proxy
+    ports:
+      - "80:8080"
+    restart: always
+    volumes:
+      - /mnt/docker-nginx/conf.d:/etc/nginx/conf.d
+networks:
+  default:
+    external:
+      name: nikkyrron-net
+  
