@@ -2,23 +2,14 @@ version: '3'
 
 services:
   jenkins-app:
-    container_name: jenkins-app
+    container_name: jenkins
     image: jenkins/jenkins:lts
     restart: always
     expose:
       - "8080"
     volumes:
-      - /mnt/jenkins_app:/var/jenkins_home
+      - /mnt/jenkins:/var/jenkins_home
 
-  jenkins-config:
-    container_name: jenkins-config
-    image: jenkins/jenkins:lts
-    restart: always
-    expose:
-      - "8080"
-    volumes:
-      - /mnt/jenkins_config:/var/jenkins_home
-      
 networks:
   default:
     external:
