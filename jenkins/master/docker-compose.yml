@@ -5,7 +5,7 @@ services:
     container_name: jenkins
     image: jenkins/jenkins:lts-alpine
     restart: always
-    expose:
+    ports:
       - "8080:8080"
     volumes:
       - /mnt/jenkins:/var/jenkins_home
