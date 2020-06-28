@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+
+  grav:
+    container_name: grav
+    image: roninhockley/grav:v2
+    ports:
+      - "80"
+    volumes:
+        -  grav-data:/var/www/html
+
+networks:
+  default:
+    external:
+      name: nikkyrron-net
+
+volumes:
+  grav-data:
+
+    
